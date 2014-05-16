@@ -83,7 +83,7 @@ Europe
 * Norway
 * Poland
 * Sweden
-* United Kingdom (incl. Northern Ireland)
+* United Kingdom (incl. Northern Ireland, Scotland)
 
 America
 -------
