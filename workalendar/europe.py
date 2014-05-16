@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from workalendar.core import WesternCalendar, ChristianMixin, OrthodoxMixin
 from workalendar.core import THU, MON, FRI, SAT
+from workalendar.scotland import *  # noqa
 
 
 class CzechRepublic(WesternCalendar, ChristianMixin):
@@ -337,38 +338,3 @@ class EuropeanCentralBank(WesternCalendar, ChristianMixin):
 
     include_good_friday = True
     include_easter_monday = True
-
-
-class Scotland(WesternCalendar, ChristianMixin):
-    "Scotland"
-    FIXED_HOLIDAYS = WesternCalendar.FIXED_HOLIDAYS + (
-        (1, 2, "New Year Holiday"),
-        (12, 26, "Boxing Day"),
-        (11, 30, "St Andrew's Day"),
-    )
-    include_good_friday = True
-
-    def get_may_day(self, year):
-        return (
-            Scotland.get_nth_weekday_in_month(year, 5, MON),
-            "May Day"
-        )
-
-    def get_spring_holiday(self, year):
-        return (
-            UnitedKingdom.get_last_weekday_in_month(year, 5, MON),
-            "Spring Holiday"
-        )
-
-    def get_summer_holiday(self, year):
-        return (
-            Scotland.get_nth_weekday_in_month(year, 8, MON),
-            "Summer Holiday"
-        )
-
-    def get_variable_days(self, year):
-        days = super(Scotland, self).get_variable_days(year)
-        days.append(self.get_may_day(year))
-        days.append(self.get_spring_holiday(year))
-        days.append(self.get_summer_holiday(year))
-        return days
