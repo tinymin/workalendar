@@ -14,6 +14,7 @@ from workalendar.europe import (
     ScotlandElgin,
     ScotlandFalkirk,
     ScotlandFife,
+    ScotlandGalashiels,
     ScotlandGlasgow,
     ScotlandInverclyde,
     ScotlandInverness,
@@ -104,6 +105,12 @@ class VictoriaDayLastMondayMayMixin(object):
         self.assertIn(date(2011, 5, 30), holidays)
 
 
+class SpringHolidayFirstMondayJuneMixin(object):
+    def test_spring_holiday(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 6, 2), holidays)
+
+
 # -----------------------------------------------------------------------------
 class ScotlandTest(GenericCalendarTest):
     cal_class = Scotland
@@ -170,7 +177,9 @@ class ScotlandDundeeTest(
     cal_class = ScotlandDundee
 
 
-class ScotlandFifeTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
+class ScotlandFifeTest(
+        SpringHolidayFirstMondayAprilMixin, SpringHolidayFirstMondayJuneMixin,
+        ScotlandTest):
     cal_class = ScotlandFife
 
 
@@ -197,13 +206,19 @@ class ScotlandFalkirkTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
     cal_class = ScotlandFalkirk
 
 
+class ScotlandGalashiels(SpringHolidayFirstMondayJuneMixin, ScotlandTest):
+    cal_class = ScotlandGalashiels
+
+
 class ScotlandGlasgowTest(
         EasterMondayMixin, SpringHolidayLastMondayMayMixin,
         ScotlandTest):
     cal_class = ScotlandGlasgow
 
 
-class ScotlandInverclydeTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
+class ScotlandInverclydeTest(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayFirstMondayJuneMixin,
+        ScotlandTest):
     cal_class = ScotlandInverclyde
 
     def test_spring_holiday_2014(self):

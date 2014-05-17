@@ -59,6 +59,17 @@ class VictoriaDayLastMondayMayMixin(object):
         )
 
 
+class SpringHolidayFirstMondayJuneMixin(object):
+    def get_variable_days(self, year):
+        days = super(SpringHolidayFirstMondayJuneMixin, self)\
+            .get_variable_days(year)
+        days.append((
+            Scotland.get_nth_weekday_in_month(year, 6, MON),
+            "Spring Holiday"
+        ))
+        return days
+
+
 # -----------------------------------------------------------------------------
 
 class Scotland(WesternCalendar, ChristianMixin):
@@ -166,7 +177,9 @@ class ScotlandDundee(
     "Dundee (Scotland)"
 
 
-class ScotlandFife(SpringHolidayFirstMondayAprilMixin, Scotland):
+class ScotlandFife(
+        SpringHolidayFirstMondayAprilMixin, SpringHolidayFirstMondayJuneMixin,
+        Scotland):
     "Fife (Scotland)"
 
 
@@ -199,20 +212,32 @@ class ScotlandFalkirk(GoodFridayMixin, EasterMondayMixin, Scotland):
     "Falkirk (Scotland)"
 
 
+class ScotlandGalashiels(SpringHolidayFirstMondayJuneMixin, Scotland):
+    "Galashiels (Scotland)"
+
+
 class ScotlandGlasgow(
         EasterMondayMixin, SpringHolidayLastMondayMayMixin,
         Scotland):
     "Glasgow (Scotland)"
 
 
-class ScotlandInverclyde(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandInverclyde(
+        GoodFridayMixin, EasterMondayMixin,
+        Scotland):
     "Inverclyde (Scotland)"
 
-    def get_spring_holiday(self, year):
-        return (
-            Scotland.get_last_weekday_in_month(year, 4, MON),
-            "Spring Holiday"
-        )
+    def get_variable_days(self, year):
+        days = super(ScotlandInverclyde, self).get_variable_days(year)
+        days.append((
+            ScotlandInverclyde.get_last_weekday_in_month(year, 4, MON),
+            "Spring Holiday",
+        ))
+        days.append((
+            ScotlandInverclyde.get_nth_weekday_in_month(year, 6, MON),
+            "Spring Holiday",
+        ))
+        return days
 
 
 class ScotlandKilmarnock(GoodFridayMixin, EasterMondayMixin, Scotland):
