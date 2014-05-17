@@ -6,6 +6,7 @@ from workalendar.europe import (
     ScotlandAngus,
     ScotlandAyr,
     ScotlandCarnoustie,
+    ScotlandClydebank,
     ScotlandDumfriesGalloway,
     ScotlandDundee,
     ScotlandEastDunbartonshire,
@@ -59,6 +60,30 @@ class SpringHolidaySecondMondayAprilMixin(object):
         self.assertIn(date(2014, 4, 14), holidays)  # Spring holiday
 
 
+class SpringHolidayTuesdayMondayMayMixin(object):
+    "Test the 'Tuesday after 1st Monday in May' rule"
+    def test_spring_holiday_2014(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 5, 5), holidays)
+
+    def test_spring_holiday_2012(self):
+        # Special case: since May 1st is a Tuesday, it's not the 1st Tuesday
+        holidays = self.cal.holidays_set(2012)
+        self.assertIn(date(2012, 5, 8), holidays)
+
+
+class VictoriaDayLastMondayBefore24MayMixin(object):
+    "Test the 'Last Monday strictly before 24 May' rule"
+    def test_victoria_day_2014(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 5, 19), holidays)
+
+    def test_victoria_day_2010(self):
+        # Special case: May 24th is a Monday, but it's *strictly* this day
+        holidays = self.cal.holidays_set(2010)
+        self.assertIn(date(2010, 5, 17), holidays)
+
+
 class ScotlandTest(GenericCalendarTest):
     cal_class = Scotland
 
@@ -106,6 +131,10 @@ class ScotlandCarnoustieTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
     cal_class = ScotlandCarnoustie
 
 
+class ScotlandClydebankTest(SpringHolidayTuesdayMondayMayMixin, ScotlandTest):
+    cal_class = ScotlandClydebank
+
+
 class ScotlandDumfriesGallowayTest(GoodFridayMixin, ScotlandTest):
     cal_class = ScotlandDumfriesGalloway
 
@@ -124,7 +153,10 @@ class ScotlandFifeTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
     cal_class = ScotlandFife
 
 
-class ScotlandEdinburghTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
+class ScotlandEdinburghTest(
+        GoodFridayMixin, EasterMondayMixin,
+        VictoriaDayLastMondayBefore24MayMixin,
+        ScotlandTest):
     cal_class = ScotlandEdinburgh
 
     def test_spring_holiday_2014(self):
@@ -175,6 +207,10 @@ class ScotlandPaisleyTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
 class ScotlandPerthTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
     cal_class = ScotlandPerth
 
+    def test_victoria_day_2014(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 5, 26), holidays)
+
 
 class ScotlandScottishBordersTest(
         SpringHolidayFirstMondayAprilMixin,
@@ -182,7 +218,9 @@ class ScotlandScottishBordersTest(
     cal_class = ScotlandScottishBorders
 
 
-class ScotlandStirlingTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
+class ScotlandStirlingTest(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayTuesdayMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandStirling
 
 

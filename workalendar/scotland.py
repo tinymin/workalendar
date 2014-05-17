@@ -4,6 +4,7 @@ Scotland specific module.
 """
 # Since Scotland territories have a lot of different variations, it has become
 # necessary to split this module and associated tests
+from datetime import timedelta, date
 from workalendar.core import WesternCalendar, ChristianMixin
 from workalendar.core import MON
 
@@ -32,6 +33,17 @@ class SpringHolidaySecondMondayAprilMixin(object):
             "Spring Holiday"
         )
 
+
+class SpringHolidayTuesdayMondayMayMixin(object):
+    def get_spring_holiday(self, year):
+        first_monday = Scotland.get_nth_weekday_in_month(year, 5, MON)
+        return (
+            first_monday + timedelta(days=1),
+            "Spring Holiday",
+        )
+
+
+# -----------------------------------------------------------------------------
 
 class Scotland(WesternCalendar, ChristianMixin):
     "Scotland"
@@ -83,6 +95,8 @@ class Scotland(WesternCalendar, ChristianMixin):
         days.append(self.get_may_day(year))
         days.append(self.get_spring_holiday(year))
         days.append(self.get_summer_holiday(year))
+        if hasattr(self, 'get_victoria_day'):
+            days.append(self.get_victoria_day(year))
         return days
 
 
@@ -113,6 +127,10 @@ class ScotlandAyr(GoodFridayMixin, EasterMondayMixin, Scotland):
 
 class ScotlandCarnoustie(SpringHolidayFirstMondayAprilMixin, Scotland):
     "Carnoustie (Scotland)"
+
+
+class ScotlandClydebank(SpringHolidayTuesdayMondayMayMixin, Scotland):
+    "Clydebank (Scotland)"
 
 
 class ScotlandDumfriesGalloway(GoodFridayMixin, Scotland):
@@ -147,6 +165,16 @@ class ScotlandEdinburgh(GoodFridayMixin, EasterMondayMixin, Scotland):
         return (
             spring_holiday,
             "Spring Holiday"
+        )
+
+    def get_victoria_day(self, year):
+        "Last Monday strictly before May 24th"
+        victoria_day = date(year, 5, 23)
+        while victoria_day.weekday() != MON:
+            victoria_day = victoria_day - timedelta(days=1)
+        return (
+            victoria_day,
+            "Victoria Day",
         )
 
 
@@ -187,12 +215,21 @@ class ScotlandPaisley(GoodFridayMixin, EasterMondayMixin, Scotland):
 class ScotlandPerth(SpringHolidayFirstMondayAprilMixin, Scotland):
     "Perth (Scotland)"
 
+    def get_victoria_day(self, year):
+        "4th Monday in May"
+        return (
+            Scotland.get_nth_weekday_in_month(2014, 5, MON, 4),
+            "Victoria Day",
+        )
+
 
 class ScotlandScottishBorders(SpringHolidayFirstMondayAprilMixin, Scotland):
     "Scottish Borders (Scotland)"
 
 
-class ScotlandStirling(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandStirling(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayTuesdayMondayMayMixin,
+        Scotland):
     "Stirling (Scotland)"
 
 
