@@ -94,6 +94,17 @@ class SpringHolidayLastMondayMayMixin(object):
         self.assertIn(date(2011, 5, 30), holidays)
 
 
+class VictoriaDayLastMondayMayMixin(object):
+    def test_victoria_day_2014(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 5, 26), holidays)
+
+    def test_victoria_day_2011(self):
+        holidays = self.cal.holidays_set(2011)
+        self.assertIn(date(2011, 5, 30), holidays)
+
+
+# -----------------------------------------------------------------------------
 class ScotlandTest(GenericCalendarTest):
     cal_class = Scotland
 
@@ -153,7 +164,9 @@ class ScotlandEastDunbartonshireTest(
     cal_class = ScotlandEastDunbartonshire
 
 
-class ScotlandDundeeTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
+class ScotlandDundeeTest(
+        SpringHolidayFirstMondayAprilMixin, VictoriaDayLastMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandDundee
 
 
@@ -212,7 +225,9 @@ class ScotlandNorthLanarkshireTest(
     cal_class = ScotlandNorthLanarkshire
 
 
-class ScotlandPaisleyTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
+class ScotlandPaisleyTest(
+        GoodFridayMixin, EasterMondayMixin, VictoriaDayLastMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandPaisley
 
 

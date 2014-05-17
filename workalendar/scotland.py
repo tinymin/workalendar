@@ -51,6 +51,14 @@ class SpringHolidayLastMondayMayMixin(object):
         )
 
 
+class VictoriaDayLastMondayMayMixin(object):
+    def get_victoria_day(self, year):
+        return (
+            Scotland.get_last_weekday_in_month(year, 5, MON),
+            "Spring Holiday"
+        )
+
+
 # -----------------------------------------------------------------------------
 
 class Scotland(WesternCalendar, ChristianMixin):
@@ -152,7 +160,9 @@ class ScotlandElgin(SpringHolidaySecondMondayAprilMixin, Scotland):
     "Elgin (Scotland)"
 
 
-class ScotlandDundee(SpringHolidayFirstMondayAprilMixin, Scotland):
+class ScotlandDundee(
+        SpringHolidayFirstMondayAprilMixin, VictoriaDayLastMondayMayMixin,
+        Scotland):
     "Dundee (Scotland)"
 
 
@@ -219,7 +229,9 @@ class ScotlandNorthLanarkshire(
     "North Lanarkshire (Scotland)"
 
 
-class ScotlandPaisley(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandPaisley(
+        GoodFridayMixin, EasterMondayMixin, VictoriaDayLastMondayMayMixin,
+        Scotland):
     "Paisley (Scotland)"
 
 
