@@ -84,6 +84,16 @@ class VictoriaDayLastMondayBefore24MayMixin(object):
         self.assertIn(date(2010, 5, 17), holidays)
 
 
+class SpringHolidayLastMondayMayMixin(object):
+    def test_spring_holiday_2014(self):
+        holidays = self.cal.holidays_set(2014)
+        self.assertIn(date(2014, 5, 26), holidays)
+
+    def test_spring_holiday_2011(self):
+        holidays = self.cal.holidays_set(2011)
+        self.assertIn(date(2011, 5, 30), holidays)
+
+
 class ScotlandTest(GenericCalendarTest):
     cal_class = Scotland
 
@@ -96,10 +106,6 @@ class ScotlandTest(GenericCalendarTest):
         self.assertIn(date(2014, 11, 30), holidays)  # St. Andrew
         self.assertIn(date(2014, 12, 25), holidays)  # XMas
         self.assertIn(date(2014, 12, 26), holidays)  # Boxing day
-
-    def test_spring_holiday_2014(self):
-        holidays = self.cal.holidays_set(2014)
-        self.assertIn(date(2014, 5, 26), holidays)  # Spring holiday
 
 
 class ScotlandInvernessTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
@@ -123,7 +129,9 @@ class ScotlandAngusTest(SpringHolidaySecondMondayAprilMixin, ScotlandTest):
     cal_class = ScotlandAngus
 
 
-class ScotlandAyrTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
+class ScotlandAyrTest(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandAyr
 
 
@@ -140,7 +148,7 @@ class ScotlandDumfriesGallowayTest(GoodFridayMixin, ScotlandTest):
 
 
 class ScotlandEastDunbartonshireTest(
-        GoodFridayMixin, EasterMondayMixin,
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
         ScotlandTest):
     cal_class = ScotlandEastDunbartonshire
 
@@ -176,7 +184,9 @@ class ScotlandFalkirkTest(GoodFridayMixin, EasterMondayMixin, ScotlandTest):
     cal_class = ScotlandFalkirk
 
 
-class ScotlandGlasgowTest(EasterMondayMixin, ScotlandTest):
+class ScotlandGlasgowTest(
+        EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandGlasgow
 
 
@@ -196,7 +206,9 @@ class ScotlandMonifiethTest(SpringHolidayFirstMondayAprilMixin, ScotlandTest):
     cal_class = ScotlandMonifieth
 
 
-class ScotlandNorthLanarkshireTest(EasterMondayMixin, ScotlandTest):
+class ScotlandNorthLanarkshireTest(
+        EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        ScotlandTest):
     cal_class = ScotlandNorthLanarkshire
 
 
@@ -229,7 +241,7 @@ class ScotlandSouthTest(GoodFridayMixin, ScotlandTest):
 
 
 class ScotlandSouthLanarkshireTest(
-        GoodFridayMixin, EasterMondayMixin,
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
         ScotlandTest):
     cal_class = ScotlandSouthLanarkshire
 

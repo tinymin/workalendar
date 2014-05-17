@@ -43,6 +43,14 @@ class SpringHolidayTuesdayMondayMayMixin(object):
         )
 
 
+class SpringHolidayLastMondayMayMixin(object):
+    def get_spring_holiday(self, year):
+        return (
+            Scotland.get_last_weekday_in_month(year, 5, MON),
+            "Spring Holiday"
+        )
+
+
 # -----------------------------------------------------------------------------
 
 class Scotland(WesternCalendar, ChristianMixin):
@@ -57,12 +65,6 @@ class Scotland(WesternCalendar, ChristianMixin):
         return (
             Scotland.get_nth_weekday_in_month(year, 5, MON),
             "May Day"
-        )
-
-    def get_spring_holiday(self, year):
-        return (
-            Scotland.get_last_weekday_in_month(year, 5, MON),
-            "Spring Holiday"
         )
 
     def get_summer_holiday(self, year):
@@ -93,7 +95,8 @@ class Scotland(WesternCalendar, ChristianMixin):
     def get_variable_days(self, year):
         days = super(Scotland, self).get_variable_days(year)
         days.append(self.get_may_day(year))
-        days.append(self.get_spring_holiday(year))
+        if hasattr(self, 'get_spring_holiday'):
+            days.append(self.get_spring_holiday(year))
         days.append(self.get_summer_holiday(year))
         if hasattr(self, 'get_victoria_day'):
             days.append(self.get_victoria_day(year))
@@ -121,7 +124,9 @@ class ScotlandAngus(SpringHolidaySecondMondayAprilMixin, Scotland):
     "Angus (Scotland)"
 
 
-class ScotlandAyr(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandAyr(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        Scotland):
     "Ayr (Scotland)"
 
 
@@ -137,7 +142,9 @@ class ScotlandDumfriesGalloway(GoodFridayMixin, Scotland):
     "Dumfries and Galloway (Scotland)"
 
 
-class ScotlandEastDunbartonshire(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandEastDunbartonshire(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        Scotland):
     "East Dunbartonshire (Scotland)"
 
 
@@ -182,7 +189,9 @@ class ScotlandFalkirk(GoodFridayMixin, EasterMondayMixin, Scotland):
     "Falkirk (Scotland)"
 
 
-class ScotlandGlasgow(EasterMondayMixin, Scotland):
+class ScotlandGlasgow(
+        EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        Scotland):
     "Glasgow (Scotland)"
 
 
@@ -204,7 +213,9 @@ class ScotlandMonifieth(SpringHolidayFirstMondayAprilMixin, Scotland):
     "Monifieth (Scotland)"
 
 
-class ScotlandNorthLanarkshire(EasterMondayMixin, Scotland):
+class ScotlandNorthLanarkshire(
+        EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        Scotland):
     "North Lanarkshire (Scotland)"
 
 
@@ -237,7 +248,9 @@ class ScotlandSouth(GoodFridayMixin, Scotland):
     "South (Scotland)"
 
 
-class ScotlandSouthLanarkshire(GoodFridayMixin, EasterMondayMixin, Scotland):
+class ScotlandSouthLanarkshire(
+        GoodFridayMixin, EasterMondayMixin, SpringHolidayLastMondayMayMixin,
+        Scotland):
     "South Lanarkshire (Scotland)"
 
 
