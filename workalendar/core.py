@@ -58,6 +58,7 @@ class Calendar(object):
         self._holidays[year] = sorted(temp_calendar)
         return self._holidays[year]
 
+    # TODO Convert!!!!
     def get_holiday_label(self, day):
         """Return the label of the holiday, if the date is a holiday"""
         # a little exception: chop the datetime type
@@ -66,10 +67,12 @@ class Calendar(object):
         return {day: label for day, label in self.holidays(day.year)
                 }.get(day)
 
+    # TODO Convert!!!!
     def holidays_set(self, year=None):
         "Return a quick date index (set)"
         return set([day for day, label in self.holidays(year)])
 
+    # TODO Convert!!!!
     def get_weekend_days(self):
         """Return a list (or a tuple) of weekdays that are *not* working days.
 
@@ -83,6 +86,7 @@ class Calendar(object):
                                       "WEEKEND_DAYS or implement the "
                                       "`get_weekend_days` method")
 
+    # TODO Convert!!!!
     def is_working_day(self, day,
                        extra_working_days=None, extra_holidays=None):
         """Return True if it's a working day.
@@ -112,6 +116,7 @@ class Calendar(object):
 
         return not self.is_holiday(day, extra_holidays=extra_holidays)
 
+    # TODO Convert!!!!
     def is_holiday(self, day, extra_holidays=None):
         """Return True if it's an holiday.
         In addition to the regular holidays, you can add exceptions.
@@ -129,6 +134,7 @@ class Calendar(object):
 
         return day in self.holidays_set(day.year)
 
+    # TODO Convert!!!!
     def add_working_days(self, day, delta,
                          extra_working_days=None, extra_holidays=None):
         """Add `delta` working days to the date.
@@ -158,6 +164,7 @@ class Calendar(object):
                 days += 1
         return temp_day
 
+    # TODO Convert!!!!
     def sub_working_days(self, day, delta,
                          extra_working_days=None, extra_holidays=None):
         """
@@ -182,6 +189,7 @@ class Calendar(object):
         return self.add_working_days(
             day, -delta, extra_working_days, extra_holidays)
 
+    # TODO Convert!!!!
     def find_following_working_day(self, day):
         "Looks for the following working day"
         while day.weekday() in self.get_weekend_days():
@@ -189,6 +197,7 @@ class Calendar(object):
         return day
 
     @staticmethod
+    # TODO Convert!!!!
     def get_nth_weekday_in_month(year, month, weekday, n=1, start=None):
         """Get the nth weekday in a given month. e.g:
 
@@ -215,6 +224,7 @@ class Calendar(object):
         return day
 
     @staticmethod
+    # TODO Convert!!!!
     def get_last_weekday_in_month(year, month, weekday):
         """Get the last weekday in a given month. e.g:
 
@@ -230,6 +240,7 @@ class Calendar(object):
         return day
 
     @staticmethod
+    # TODO Convert!!!!
     def get_first_weekday_after(day, weekday):
         """Get the first weekday after a given day. If the day is the same
         weekday, the same day will be returned.
@@ -275,58 +286,71 @@ class ChristianMixin(Calendar):
     include_boxing_day = False
     boxing_day_label = "Boxing Day"
 
+    # TODO Convert!!!!
     def get_ash_wednesday(self, year):
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=46)
 
+    # TODO Convert!!!!
     def get_palm_sunday(self, year):
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=7)
 
+    # TODO Convert!!!!
     def get_holy_thursday(self, year):
         "Return the date of the last thursday before easter"
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=3)
 
+    # TODO Convert!!!!
     def get_good_friday(self, year):
         "Return the date of the last friday before easter"
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=2)
 
+    # TODO Convert!!!!
     def get_clean_monday(self, year):
         "Return the clean monday date"
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=48)
 
+    # TODO Convert!!!!
     def get_easter_saturday(self, year):
         "Return the Easter Saturday date"
         sunday = self.get_easter_sunday(year)
         return sunday - timedelta(days=1)
 
+    # TODO Convert!!!!
     def get_easter_sunday(self, year):
         "Return the date of the easter (sunday) -- following the easter method"
         return easter.easter(year, self.EASTER_METHOD)
 
+    # TODO Convert!!!!
     def get_easter_monday(self, year):
         "Return the date of the monday after easter"
         sunday = self.get_easter_sunday(year)
         return sunday + timedelta(days=1)
 
+    # TODO Convert!!!!
     def get_ascension_thursday(self, year):
         easter = self.get_easter_sunday(year)
         return easter + timedelta(days=39)
 
+    # TODO Convert!!!!
     def get_whit_monday(self, year):
         easter = self.get_easter_sunday(year)
         return easter + timedelta(days=50)
 
+    # TODO Convert!!!!
     def get_whit_sunday(self, year):
         easter = self.get_easter_sunday(year)
         return easter + timedelta(days=49)
 
+    # TODO Convert!!!!
     def get_corpus_christi(self, year):
         return self.get_easter_sunday(year) + timedelta(days=60)
 
+    # TODO Convert!!!!
     def shift_christmas_boxing_days(self, year):
         """ When Christmas and/or Boxing Day falls on a weekend, it is rolled
             forward to the next weekday.
@@ -344,6 +368,7 @@ class ChristianMixin(Calendar):
             results.append((shift, boxing_day_label))
         return results
 
+    # TODO Convert!!!!
     def get_variable_days(self, year):  # noqa
         "Return the christian holidays list according to the mixin"
         days = super(ChristianMixin, self).get_variable_days(year)
@@ -408,6 +433,7 @@ class WesternCalendar(Calendar):
         (1, 1, 'New year'),
     )
 
+    # TODO Convert!!!!
     def get_variable_days(self, year):
         days = super(WesternCalendar, self).get_variable_days(year)
         new_year = date(year, 1, 1)
@@ -428,6 +454,7 @@ class LunarCalendar(Calendar):
     Calendar ready to compute luncar calendar days
     """
     @staticmethod
+    # TODO Convert!!!!
     def lunar(year, month, day):
         return LunarDate(year, month, day).toSolarDate()
 
@@ -450,6 +477,7 @@ class ChineseNewYearCalendar(LunarCalendar):
     # Some calendars roll a starting Sunday CNY to Sat
     shift_start_cny_sunday = False
 
+    # TODO Convert!!!!
     def get_chinese_new_year(self, year):
         """
         Compute Chinese New Year days. To return a list of holidays.
@@ -519,11 +547,13 @@ class ChineseNewYearCalendar(LunarCalendar):
                 )
         return days
 
+    # TODO Convert!!!!
     def get_variable_days(self, year):
         days = super(ChineseNewYearCalendar, self).get_variable_days(year)
         days.extend(self.get_chinese_new_year(year))
         return days
 
+    # TODO Convert!!!!
     def get_shifted_holidays(self, dates):
         """
         Taking a list of existing holidays, yield a list of 'shifted' days if
@@ -536,6 +566,7 @@ class ChineseNewYearCalendar(LunarCalendar):
                     label + ' shift'
                 )
 
+    # TODO Convert!!!!
     def get_calendar_holidays(self, year):
         """
         Take into account the eventual shift to the next MON if any holiday
@@ -551,6 +582,7 @@ class ChineseNewYearCalendar(LunarCalendar):
 
 
 class EphemMixin(LunarCalendar):
+    # TODO Convert!!!!
     def calculate_equinoxes(self, year, timezone='UTC'):
         """ calculate equinox with time zone """
 
@@ -566,6 +598,7 @@ class EphemMixin(LunarCalendar):
 
         return (equinox1.date(), equinox2.date())
 
+    # TODO Convert!!!!
     def solar_term(self, year, degrees, timezone='UTC'):
         """
         Returns the date of the solar term for the given longitude
@@ -597,6 +630,7 @@ class EphemMixin(LunarCalendar):
 
         # Zero in on the exact moment.
 
+        # TODO Convert!!!!
         def f(t):
             sun.compute(t)
             longitude = sun.hlong - pi
@@ -612,12 +646,14 @@ class CalverterMixin(Calendar):
     conversion_method = None
     ISLAMIC_HOLIDAYS = ()
 
+    # TODO Convert!!!!
     def __init__(self, *args, **kwargs):
         super(CalverterMixin, self).__init__(*args, **kwargs)
         self.calverter = Calverter()
         if self.conversion_method is None:
             raise NotImplementedError
 
+    # TODO Convert!!!!
     def converted(self, year):
         conversion_method = getattr(
             self.calverter, 'jd_to_%s' % self.conversion_method)
@@ -632,14 +668,17 @@ class CalverterMixin(Calendar):
             current = current + timedelta(days=1)
         return days
 
+    # TODO Convert!!!!
     def calverted_years(self, year):
         converted = self.converted(year)
         generator = (y for y, m, d in converted)
         return sorted(list(set(generator)))
 
+    # TODO Convert!!!!
     def get_islamic_holidays(self):
         return self.ISLAMIC_HOLIDAYS
 
+    # TODO Convert!!!!
     def get_variable_days(self, year):
         warnings.warn('Please take note that, due to arbitrary decisions, '
                       'this Islamic calendar computation may be wrong.')
@@ -673,6 +712,7 @@ class IslamicMixin(CalverterMixin):
     include_laylat_al_qadr = False
     include_nuzul_al_quran = False
 
+    # TODO Convert!!!!
     def get_islamic_holidays(self):
         """Return a list of Islamic (month, day, label) for islamic holidays.
         Please take note that these dates must be expressed using the Islamic
